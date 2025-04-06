@@ -33,21 +33,7 @@ namespace AVPaperERP.API.Controllers.Admin
         {
             int result = await _smsConfigRepository.SaveSMSConfig(parameters);
 
-            if (result == (int)SaveOperationEnums.NoRecordExists)
-            {
-                _response.Message = "No record exists";
-            }
-            else if (result == (int)SaveOperationEnums.ReocrdExists)
-            {
-                _response.Message = "Record already exists";
-            }
-            else if (result == (int)SaveOperationEnums.NoResult)
-            {
-                _response.Message = "Something went wrong, please try again";
-            }
-            else
-            {
-                _response.Message = "Record details saved sucessfully";
+            = "Record details saved sucessfully";
             }
 
             _response.Id = result;
@@ -87,22 +73,7 @@ namespace AVPaperERP.API.Controllers.Admin
         {
             int result = await _smsConfigRepository.SaveSMSHistory(parameters);
 
-            if (result == (int)SaveOperationEnums.NoRecordExists)
-            {
-                _response.Message = "No record exists";
-            }
-            else if (result == (int)SaveOperationEnums.ReocrdExists)
-            {
-                _response.Message = "Record already exists";
-            }
-            else if (result == (int)SaveOperationEnums.NoResult)
-            {
-                _response.Message = "Something went wrong, please try again";
-            }
-            else
-            {
-                _response.Message = "Record details saved sucessfully";
-            }
+          
 
             _response.Id = result;
             return _response;
@@ -171,15 +142,7 @@ namespace AVPaperERP.API.Controllers.Admin
             var vConfigRefObj = _configRefRepository.GetConfigRefList(vConfigRef_Search).Result.ToList().FirstOrDefault();
             if (vConfigRefObj != null)
             {
-                sSMSTemplateName = vConfigRefObj.Ref_Value1;
-                sSMSTemplateContent = vConfigRefObj.Ref_Value2;
-
-                if (!string.IsNullOrWhiteSpace(sSMSTemplateContent))
-                {
-                    //Replace parameter 
-                    sSMSTemplateContent = sSMSTemplateContent.Replace("{#var#}", parameters.Mobile);
-                }
-            }
+               
 
             var vsmsRequest = new SMS_Request()
             {
@@ -193,7 +156,6 @@ namespace AVPaperERP.API.Controllers.Admin
 
             if (bSMSResult)
             {
-                _response.IsSuccess = true;
                 _response.Message = "Sms sent successfully";
             }
 

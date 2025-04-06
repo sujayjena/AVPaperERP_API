@@ -27,25 +27,6 @@ namespace AVPaperERP.API.Controllers.Admin
         {
             int result = await _emailConfigRepository.SaveEmailConfig(parameters);
 
-            if (result == (int)SaveOperationEnums.NoRecordExists)
-            {
-                _response.Message = "No record exists";
-            }
-            else if (result == (int)SaveOperationEnums.ReocrdExists)
-            {
-                _response.Message = "Record already exists";
-            }
-            else if (result == (int)SaveOperationEnums.NoResult)
-            {
-                _response.Message = "Something went wrong, please try again";
-            }
-            else
-            {
-                _response.Message = "Record details saved sucessfully";
-            }
-
-            _response.Id = result;
-            return _response;
         }
 
 
@@ -81,22 +62,6 @@ namespace AVPaperERP.API.Controllers.Admin
         {
             int result = await _emailConfigRepository.SaveEmailNotification(parameters);
 
-            if (result == (int)SaveOperationEnums.NoRecordExists)
-            {
-                _response.Message = "No record exists";
-            }
-            else if (result == (int)SaveOperationEnums.ReocrdExists)
-            {
-                _response.Message = "Record already exists";
-            }
-            else if (result == (int)SaveOperationEnums.NoResult)
-            {
-                _response.Message = "Something went wrong, please try again";
-            }
-            else
-            {
-                _response.Message = "Record details saved sucessfully";
-            }
 
             _response.Id = result;
             return _response;

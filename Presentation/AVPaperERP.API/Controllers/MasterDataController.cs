@@ -25,7 +25,6 @@ namespace AVPaperERP.API.Controllers
         public async Task<ResponseModel> GetReportingToEmpListForSelectList(ReportingToEmpListParameters parameters)
         {
             IEnumerable<SelectListResponse> lstResponse = await _masterDataRepository.GetReportingToEmployeeForSelectList(parameters);
-            _response.Data = lstResponse.ToList();
             return _response;
         }
 
@@ -34,7 +33,6 @@ namespace AVPaperERP.API.Controllers
         public async Task<ResponseModel> GetEmployeesListByReportingTo(int EmployeeId)
         {
             IEnumerable<EmployeesListByReportingTo_Response> lstResponse = await _masterDataRepository.GetEmployeesListByReportingTo(EmployeeId);
-            _response.Data = lstResponse.ToList();
             return _response;
         }
     }

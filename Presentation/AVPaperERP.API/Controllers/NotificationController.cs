@@ -35,23 +35,6 @@ namespace AVPaperERP.API.Controllers
         {
             int result = await _notificationRepository.SaveNotification(parameters);
 
-            if (result == (int)SaveOperationEnums.NoRecordExists)
-            {
-                _response.Message = "No record exists";
-            }
-            else if (result == (int)SaveOperationEnums.ReocrdExists)
-            {
-                _response.Message = "Record already exists";
-            }
-            else if (result == (int)SaveOperationEnums.NoResult)
-            {
-                _response.Message = "Something went wrong, please try again";
-            }
-            else
-            {
-                _response.Message = "Record details saved sucessfully";
-            }
-
             _response.Id = result;
             return _response;
 
@@ -72,27 +55,6 @@ namespace AVPaperERP.API.Controllers
         public async Task<ResponseModel> GetNotificationPopupList(Notification_Search parameters)
         {
             var vNotificationPopup_ResponseObj = new NotificationPopup_Response();
-
-            var objList = await _notificationRepository.GetNotificationList(parameters);
-
-            vNotificationPopup_ResponseObj.UnReadCount = objList.ToList().Where(x => x.ReadUnread == false).ToList().Count();
-            foreach (var notification in objList)
-            {
-                var vNotification_ResponseObj = new Notification_Response()
-                {
-                    Id = notification.Id,
-                    CustomerEmployeeId = notification.CustomerEmployeeId,
-                    Subject = notification.Subject,
-                    SendTo = notification.SendTo,
-                    Message = notification.Message,
-                    RefValue1 = notification.RefValue1,
-                    RefValue2 = notification.RefValue2,
-                    ReadUnread = notification.ReadUnread,
-                    CreatedDate = notification.CreatedDate,
-                };
-
-                vNotificationPopup_ResponseObj.NotificationList.Add(notification);
-            }
 
             _response.Data = vNotificationPopup_ResponseObj;
             _response.Total = parameters.Total;
@@ -145,39 +107,7 @@ namespace AVPaperERP.API.Controllers
 
                     WorkSheet1.Cells[1, 1].Value = "No";
                     WorkSheet1.Cells[1, 2].Value = "Time Ago";
-                    WorkSheet1.Cells[1, 3].Value = "Notification";
-
-                    recordIndex = 2;
-
-                    int rowNo = 1;
-
-                    foreach (var items in lstObj)
-                    {
-                        WorkSheet1.Cells[recordIndex, 1].Value = rowNo;
-
-                        string vTimeAgo = string.Empty;
-                        DateTime notificationDate = Convert.ToDateTime(items.CreatedDate);
-                        TimeSpan vdiff = DateTime.Now - notificationDate;
-
-                        if (vdiff.Days > 0)
-                        {
-                            if (vdiff.Days == 1)
-                            {
-                                if (vdiff.Hours == 0)
-                                {
-                                    vTimeAgo = vdiff.Days + " Day Ago";
-                                }
-                                else
-                                {
-                                    vTimeAgo = vdiff.Days + " Day and " + vdiff.Hours + " Hr Ago";
-                                }
-                            }
-                            else
-                            {
-                                if (vdiff.Hours == 0)
-                                {
-                                    vTimeAgo = vdiff.Days + " Days Ago";
-                                }
+                    W
                                 else
                                 {
                                     vTimeAgo = vdiff.Days + " Days and " + vdiff.Hours + " Hr Ago";
@@ -199,15 +129,6 @@ namespace AVPaperERP.API.Controllers
                         WorkSheet1.Cells[recordIndex, 2].Value = vTimeAgo;
                         WorkSheet1.Cells[recordIndex, 3].Value = items.Message;
 
-                        rowNo++;
-
-                        recordIndex += 1;
-                    }
-
-                    WorkSheet1.Columns.AutoFit();
-
-                    excelExportData.SaveAs(msExportDataFile);
-                    msExportDataFile.Position = 0;
                     result = msExportDataFile.ToArray();
                 }
             }
